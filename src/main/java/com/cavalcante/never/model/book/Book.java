@@ -5,6 +5,8 @@ import com.cavalcante.never.model.categories.Category;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +26,7 @@ public class Book {
     private String title;
     private String description;
     private String publisher;
+    private LocalDate publicationdate;
     private Double price;
 
     @ManyToMany
