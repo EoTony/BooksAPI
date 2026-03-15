@@ -11,7 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "categories")
 public class Category {

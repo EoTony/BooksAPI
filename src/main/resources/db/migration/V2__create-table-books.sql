@@ -5,6 +5,7 @@ CREATE TABLE books(
     publisher VARCHAR(100),
     publidate DATE NOT NULL,
     price NUMERIC(10,2) NOT NULL,
+    CONSTRAINT price_no_negative check ( price >= 0 ),
     author_id BIGINT NOT NULL,
     FOREIGN KEY (author_id) REFERENCES authors(id)
 

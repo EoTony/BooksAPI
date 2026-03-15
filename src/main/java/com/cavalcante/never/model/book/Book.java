@@ -14,8 +14,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
 @Entity
+@EqualsAndHashCode(of = "id")
 @Table(name = "books")
 public class Book {
 
@@ -26,8 +26,8 @@ public class Book {
     private String title;
     private String description;
     private String publisher;
-    private LocalDate publicationdate;
-    private Double price;
+    private LocalDate publidate;
+    private BigDecimal price;
 
     @ManyToMany
     @JoinTable(name = "categories_books",
