@@ -2,9 +2,13 @@ package com.cavalcante.never.controller;
 
 import com.cavalcante.never.model.author.AuthorRequestDTO;
 import com.cavalcante.never.model.author.AuthorResponseDTO;
+import com.cavalcante.never.model.page.PageDTO;
 import com.cavalcante.never.service.AuthorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,7 +30,7 @@ public class AuthorController {
 
     @PostMapping()
     public ResponseEntity<AuthorResponseDTO> createAuthor(@RequestBody @Valid AuthorRequestDTO authorRequestDTO){
-        AuthorResponseDTO author = authorService.create(authorRequestDTO);
+        AuthorResponseDTO author = authorService.insert(authorRequestDTO);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -38,7 +42,7 @@ public class AuthorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteById(@PathVariable Long id){
         authorService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -47,6 +51,12 @@ public class AuthorController {
     public ResponseEntity<AuthorResponseDTO> update(@PathVariable Long id,@RequestBody @Valid AuthorRequestDTO authorRequestDTO){
         AuthorResponseDTO author = authorService.update(authorRequestDTO,id);
         return ResponseEntity.ok(author);
+    }
+
+    @GetMapping
+    public PageDTO<AuthorResponseDTO> findAll(@PageableDefault(size = 5,sort = "id")Pageable pageable){
+        Page<AuthorResponseDTO> page = authorService.findAll(pageable);
+        return new PageDTO<AuthorResponseDTO>(page.getContent(),page.getNumber(),page.getSize(),page.getTotalElements(),page.getTotalPages());
     }
 
 }

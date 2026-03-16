@@ -4,10 +4,11 @@ import com.cavalcante.never.model.author.Author;
 import com.cavalcante.never.model.author.AuthorRequestDTO;
 import com.cavalcante.never.model.author.AuthorResponseDTO;
 import com.cavalcante.never.repositories.AuthorRepository;
-import com.cavalcante.never.service.exceptions.DataBaseException;
 import com.cavalcante.never.service.exceptions.InvalidEmailException;
 import com.cavalcante.never.service.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,11 @@ public class AuthorService {
     private AuthorRepository authorRepository;
 
     @Transactional(readOnly = true)
+    public Page<AuthorResponseDTO> findAll(Pageable pageable){
+        return authorRepository.findAll(pageable).map(this::toResponse);
+    }
+
+    @Transactional(readOnly = true)
     public AuthorResponseDTO findById(Long id) {
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(id));
@@ -26,7 +32,7 @@ public class AuthorService {
     }
 
     @Transactional
-    public AuthorResponseDTO create(AuthorRequestDTO authorRequestDTO){
+    public AuthorResponseDTO insert(AuthorRequestDTO authorRequestDTO){
         if(this.authorRepository.existsByEmail(authorRequestDTO.email())){
             throw new InvalidEmailException("Email invalido para cadastro:"+authorRequestDTO.email());
         }
@@ -78,4 +84,6 @@ public class AuthorService {
                 author.getNacionality());
         return authorResponseDTO;
     }
+
+
 }

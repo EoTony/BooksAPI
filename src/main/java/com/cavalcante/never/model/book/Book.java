@@ -32,10 +32,10 @@ public class Book {
     @ManyToMany
     @JoinTable(name = "categories_books",
     joinColumns = @JoinColumn(name = "book_id"),
-    inverseJoinColumns = @JoinColumn(name = "category_id"))
+    inverseJoinColumns = @JoinColumn(name = "categoriesIds"))
     private Set<Category> categories = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "authorId")
     private Author author;
 }
