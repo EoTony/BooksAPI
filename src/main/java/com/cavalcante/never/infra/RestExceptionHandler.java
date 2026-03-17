@@ -1,5 +1,6 @@
 package com.cavalcante.never.infra;
 
+import com.cavalcante.never.exceptions.DataBaseException;
 import com.cavalcante.never.exceptions.InvalidEmailException;
 import com.cavalcante.never.exceptions.ResourceNotFoundException;
 import org.apache.coyote.Response;
@@ -61,6 +62,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     private ResponseEntity<RestMessengerHandler> dataIntegrityViolationException(DataIntegrityViolationException e){
+        RestMessengerHandler body = new RestMessengerHandler(HttpStatus.CONFLICT,"Operação não pôde ser concluída por violação de integridade dos dados.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(DataBaseException.class)
+    private ResponseEntity<RestMessengerHandler> dataBaseException(DataBaseException e){
         RestMessengerHandler body = new RestMessengerHandler(HttpStatus.CONFLICT,"Operação não pôde ser concluída por violação de integridade dos dados.");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }

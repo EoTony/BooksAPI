@@ -1,5 +1,6 @@
 package com.cavalcante.never.service;
 
+import com.cavalcante.never.exceptions.DataBaseException;
 import com.cavalcante.never.exceptions.InvalidEmailException;
 import com.cavalcante.never.model.author.Author;
 import com.cavalcante.never.model.author.AuthorRequestDTO;
@@ -7,6 +8,8 @@ import com.cavalcante.never.model.author.AuthorResponseDTO;
 import com.cavalcante.never.repositories.AuthorRepository;
 import com.cavalcante.never.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -51,7 +54,16 @@ public class AuthorService {
 
     @Transactional
     public void deleteById(Long id){
-        authorRepository.deleteById(id);
+        try {
+            authorRepository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DataBaseException(e.getMessage());
+        }
+        catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException(e.getMessage());
+        }
+
     }
 
     @Transactional
