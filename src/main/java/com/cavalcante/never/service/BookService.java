@@ -8,16 +8,14 @@ import com.cavalcante.never.model.categories.Category;
 import com.cavalcante.never.repositories.AuthorRepository;
 import com.cavalcante.never.repositories.BookRepository;
 import com.cavalcante.never.repositories.CategoryRepository;
-import com.cavalcante.never.service.exceptions.ResourceNotFoundException;
+import com.cavalcante.never.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class BookService {
@@ -61,7 +59,6 @@ public class BookService {
         book.setPublidate(bookRequestDTO.publidate());
         book.setPrice(bookRequestDTO.price());
         book.setAuthor(author);
-        book.getCategories().forEach(a -> a.getBooks().removeIf(x -> Objects.equals(x.getId(), book.getId())));
         book.getCategories().addAll(updateList);
 
 
@@ -94,8 +91,6 @@ public class BookService {
         book.setPrice(bookRequestDTO.price());
         book.setAuthor(author);
         book.getCategories().addAll(categories);
-
-        categories.forEach(a -> a.getBooks().add(book));
 
         bookRepository.save(book);
 

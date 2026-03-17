@@ -22,6 +22,12 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
+    @GetMapping
+    public PageResponse<AuthorResponseDTO> findAll(@PageableDefault(size = 5,sort = "id")Pageable pageable){
+        Page<AuthorResponseDTO> page = authorService.findAll(pageable);
+        return new PageResponse<AuthorResponseDTO>(page.getContent(),page.getNumber(),page.getSize(),page.getTotalElements(),page.getTotalPages());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<AuthorResponseDTO> findById(@PathVariable Long id){
         AuthorResponseDTO authorResponseDTO = this.authorService.findById(id);
@@ -51,12 +57,6 @@ public class AuthorController {
     public ResponseEntity<AuthorResponseDTO> update(@PathVariable Long id,@RequestBody @Valid AuthorRequestDTO authorRequestDTO){
         AuthorResponseDTO author = authorService.update(authorRequestDTO,id);
         return ResponseEntity.ok(author);
-    }
-
-    @GetMapping
-    public PageResponse<AuthorResponseDTO> findAll(@PageableDefault(size = 5,sort = "id")Pageable pageable){
-        Page<AuthorResponseDTO> page = authorService.findAll(pageable);
-        return new PageResponse<AuthorResponseDTO>(page.getContent(),page.getNumber(),page.getSize(),page.getTotalElements(),page.getTotalPages());
     }
 
 }

@@ -1,12 +1,10 @@
 package com.cavalcante.never.service;
 
-import com.cavalcante.never.model.author.AuthorRequestDTO;
-import com.cavalcante.never.model.author.AuthorResponseDTO;
 import com.cavalcante.never.model.categories.Category;
 import com.cavalcante.never.model.categories.CategoryRequestDTO;
 import com.cavalcante.never.model.categories.CategoryResponseDTO;
 import com.cavalcante.never.repositories.CategoryRepository;
-import com.cavalcante.never.service.exceptions.ResourceNotFoundException;
+import com.cavalcante.never.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

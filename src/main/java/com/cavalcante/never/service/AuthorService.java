@@ -4,8 +4,7 @@ import com.cavalcante.never.model.author.Author;
 import com.cavalcante.never.model.author.AuthorRequestDTO;
 import com.cavalcante.never.model.author.AuthorResponseDTO;
 import com.cavalcante.never.repositories.AuthorRepository;
-import com.cavalcante.never.service.exceptions.InvalidEmailException;
-import com.cavalcante.never.service.exceptions.ResourceNotFoundException;
+import com.cavalcante.never.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +33,7 @@ public class AuthorService {
     @Transactional
     public AuthorResponseDTO insert(AuthorRequestDTO authorRequestDTO){
         if(this.authorRepository.existsByEmail(authorRequestDTO.email())){
-            throw new InvalidEmailException("Email invalido para cadastro:"+authorRequestDTO.email());
+            throw new IllegalArgumentException("Email invalido para cadastro:"+authorRequestDTO.email());
         }
         Author author = new Author();
 
@@ -58,7 +57,7 @@ public class AuthorService {
     public AuthorResponseDTO update(AuthorRequestDTO authorRequestDTO, Long id){
 
         if(authorRepository.existsByEmailAndIdNot(authorRequestDTO.email(), id)){
-            throw new InvalidEmailException("Email invalido: "+ authorRequestDTO.email());
+            throw new IllegalArgumentException("Email invalido: "+ authorRequestDTO.email());
         }
 
         Author author = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
@@ -75,14 +74,13 @@ public class AuthorService {
     }
 
     private AuthorResponseDTO toResponse(Author author){
-        AuthorResponseDTO authorResponseDTO = new AuthorResponseDTO(
+        return new AuthorResponseDTO(
                 author.getId(),
                 author.getName(),
                 author.getEmail(),
                 author.getDescription(),
                 author.getBirthdate(),
                 author.getNacionality());
-        return authorResponseDTO;
     }
 
 
