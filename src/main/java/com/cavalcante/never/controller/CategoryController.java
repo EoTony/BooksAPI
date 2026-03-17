@@ -18,6 +18,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
+
     @Autowired
     private CategoryService categoryService;
 

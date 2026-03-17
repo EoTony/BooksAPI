@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BookService {
@@ -45,9 +47,10 @@ public class BookService {
 
         Author author = authorRepository.findById(bookRequestDTO.authorId()).orElseThrow(() -> new ResourceNotFoundException(id));
 
-        List<Category> list = categoryRepository.findAllById(bookRequestDTO.categoriesIds());
+        List<Category> updateList = categoryRepository.findAllById(bookRequestDTO.categoriesIds());
 
-        if(list.size() != bookRequestDTO.categoriesIds().size()){
+
+        if(updateList.size() != bookRequestDTO.categoriesIds().size()){
             throw new IllegalArgumentException("Uma ou mais categorias não existem");
         }
         Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
@@ -58,12 +61,14 @@ public class BookService {
         book.setPublidate(bookRequestDTO.publidate());
         book.setPrice(bookRequestDTO.price());
         book.setAuthor(author);
-        book.getCategories().addAll(list);
+        book.getCategories().forEach(a -> a.getBooks().removeIf(x -> Objects.equals(x.getId(), book.getId())));
+        book.getCategories().addAll(updateList);
+
+
 
         bookRepository.save(book);
 
         return toResponse(book);
-
     }
 
 
