@@ -2,7 +2,7 @@ package com.cavalcante.never.model.page;
 
 import java.util.List;
 
-public record PageDTO<T>(
+public record PageResponse<T>(
         List<T> list,
         int page,
         int size,

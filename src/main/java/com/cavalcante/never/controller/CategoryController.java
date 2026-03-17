@@ -2,7 +2,7 @@ package com.cavalcante.never.controller;
 
 import com.cavalcante.never.model.categories.CategoryRequestDTO;
 import com.cavalcante.never.model.categories.CategoryResponseDTO;
-import com.cavalcante.never.model.page.PageDTO;
+import com.cavalcante.never.model.page.PageResponse;
 import com.cavalcante.never.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,9 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public PageDTO<CategoryResponseDTO> findAll(@PageableDefault(size = 10,sort = "id")Pageable pageable){
+    public PageResponse<CategoryResponseDTO> findAll(@PageableDefault(size = 10,sort = "id")Pageable pageable){
         Page<CategoryResponseDTO> page = categoryService.findAll(pageable);
-        return new PageDTO<CategoryResponseDTO>(page.getContent(),page.getNumber(),page.getSize(),page.getTotalElements(),page.getTotalPages());
+        return new PageResponse<CategoryResponseDTO>(page.getContent(),page.getNumber(),page.getSize(),page.getTotalElements(),page.getTotalPages());
     }
 
     @GetMapping("/{id}")

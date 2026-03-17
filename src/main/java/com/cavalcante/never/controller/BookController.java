@@ -2,7 +2,7 @@ package com.cavalcante.never.controller;
 
 import com.cavalcante.never.model.book.BookRequestDTO;
 import com.cavalcante.never.model.book.BookResponseDTO;
-import com.cavalcante.never.model.page.PageDTO;
+import com.cavalcante.never.model.page.PageResponse;
 import com.cavalcante.never.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,9 @@ public class BookController {
 
 
     @GetMapping
-    public PageDTO<BookResponseDTO> findAll(@PageableDefault(size = 10,sort = "id")Pageable pageable){
+    public PageResponse<BookResponseDTO> findAll(@PageableDefault(size = 10,sort = "id")Pageable pageable){
         Page<BookResponseDTO> page = bookService.findAll(pageable);
-        return new PageDTO<BookResponseDTO>(page.getContent(),
+        return new PageResponse<BookResponseDTO>(page.getContent(),
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalElements(),

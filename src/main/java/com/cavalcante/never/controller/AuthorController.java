@@ -2,7 +2,7 @@ package com.cavalcante.never.controller;
 
 import com.cavalcante.never.model.author.AuthorRequestDTO;
 import com.cavalcante.never.model.author.AuthorResponseDTO;
-import com.cavalcante.never.model.page.PageDTO;
+import com.cavalcante.never.model.page.PageResponse;
 import com.cavalcante.never.service.AuthorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +54,9 @@ public class AuthorController {
     }
 
     @GetMapping
-    public PageDTO<AuthorResponseDTO> findAll(@PageableDefault(size = 5,sort = "id")Pageable pageable){
+    public PageResponse<AuthorResponseDTO> findAll(@PageableDefault(size = 5,sort = "id")Pageable pageable){
         Page<AuthorResponseDTO> page = authorService.findAll(pageable);
-        return new PageDTO<AuthorResponseDTO>(page.getContent(),page.getNumber(),page.getSize(),page.getTotalElements(),page.getTotalPages());
+        return new PageResponse<AuthorResponseDTO>(page.getContent(),page.getNumber(),page.getSize(),page.getTotalElements(),page.getTotalPages());
     }
 
 }
