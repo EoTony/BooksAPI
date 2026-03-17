@@ -90,6 +90,8 @@ public class BookService {
         book.setAuthor(author);
         book.getCategories().addAll(categories);
 
+        categories.forEach(a -> a.getBooks().add(book));
+
         bookRepository.save(book);
 
         return toResponse(book);

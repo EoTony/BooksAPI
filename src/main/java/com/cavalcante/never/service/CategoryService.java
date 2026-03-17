@@ -32,7 +32,7 @@ public class CategoryService {
 
     @Transactional
     public CategoryResponseDTO create(CategoryRequestDTO categoryRequestDTO){
-        if(categoryRepository.ExistsByName(categoryRequestDTO.name())){
+        if(categoryRepository.existsByName(categoryRequestDTO.name())){
             throw new IllegalArgumentException("Categoria já existente");
         }
         Category category = new Category();

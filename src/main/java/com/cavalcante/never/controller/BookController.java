@@ -23,7 +23,6 @@ public class BookController {
     private BookService bookService;
 
 
-
     @GetMapping
     public PageDTO<BookResponseDTO> findAll(@PageableDefault(size = 10,sort = "id")Pageable pageable){
         Page<BookResponseDTO> page = bookService.findAll(pageable);
