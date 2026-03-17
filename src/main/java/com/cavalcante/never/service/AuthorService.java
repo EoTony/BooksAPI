@@ -1,5 +1,6 @@
 package com.cavalcante.never.service;
 
+import com.cavalcante.never.exceptions.InvalidEmailException;
 import com.cavalcante.never.model.author.Author;
 import com.cavalcante.never.model.author.AuthorRequestDTO;
 import com.cavalcante.never.model.author.AuthorResponseDTO;
@@ -33,7 +34,7 @@ public class AuthorService {
     @Transactional
     public AuthorResponseDTO insert(AuthorRequestDTO authorRequestDTO){
         if(this.authorRepository.existsByEmail(authorRequestDTO.email())){
-            throw new IllegalArgumentException("Email invalido para cadastro:"+authorRequestDTO.email());
+            throw new InvalidEmailException("Email invalido para cadastro:"+authorRequestDTO.email());
         }
         Author author = new Author();
 
@@ -57,7 +58,7 @@ public class AuthorService {
     public AuthorResponseDTO update(AuthorRequestDTO authorRequestDTO, Long id){
 
         if(authorRepository.existsByEmailAndIdNot(authorRequestDTO.email(), id)){
-            throw new IllegalArgumentException("Email invalido: "+ authorRequestDTO.email());
+            throw new InvalidEmailException("Email invalido: "+ authorRequestDTO.email());
         }
 
         Author author = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
