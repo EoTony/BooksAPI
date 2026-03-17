@@ -3,7 +3,6 @@ package com.cavalcante.never.infra;
 import com.cavalcante.never.exceptions.DataBaseException;
 import com.cavalcante.never.exceptions.InvalidEmailException;
 import com.cavalcante.never.exceptions.ResourceNotFoundException;
-import org.apache.coyote.Response;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -13,10 +12,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     private ResponseEntity<RestMessengerHandler> resourceNotFoundException(ResourceNotFoundException e){
@@ -37,7 +35,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    private ResponseEntity<RestMessengerHandler> httpMessageNotREadableException(HttpMessageNotReadableException e){
+    private ResponseEntity<RestMessengerHandler> httpMessageNotReadableException(HttpMessageNotReadableException e){
         RestMessengerHandler body = new RestMessengerHandler(HttpStatus.BAD_REQUEST,"Entrada invalida!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
@@ -74,12 +72,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     private ResponseEntity<RestMessengerHandler> exception(Exception e){
-        RestMessengerHandler body = new RestMessengerHandler(HttpStatus.INTERNAL_SERVER_ERROR,"Erro interno do sistema");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
-    }
-
-    @ExceptionHandler(RuntimeException.class)
-    private ResponseEntity<RestMessengerHandler> runtimeException(RuntimeException e){
         RestMessengerHandler body = new RestMessengerHandler(HttpStatus.INTERNAL_SERVER_ERROR,"Erro interno do sistema");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
